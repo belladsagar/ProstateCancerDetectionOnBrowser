@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+        <script lang="js">
+
+             async function run(){
+                const MODEL_URL = 'http://192.168.43.63:5500//model.json';
+                const model = await tf.loadLayersModel(MODEL_URL);
+                var text = "";
+                var x1 = document.getElementById("input1");
+                var x2 = document.getElementById("input2");
+                var x3 = document.getElementById("input3");
+                var x4 = document.getElementById("input4");
+                var x5 = document.getElementById("input5");
+                var x6 = document.getElementById("input6");
+                var x7 = document.getElementById("input7");
+                var x8 = document.getElementById("input8");
+                
+                var y = [];
+                //[[1,2],[3,4],[5,6]]
+                y.push(parseInt(x1.value));
+                y.push(parseInt(x2.value));
+                y.push(parseInt(x3.value));
+                y.push(parseInt(x4.value));
+                y.push(parseInt(x5.value));
+                y.push(parseInt(x6.value));
+                y.push(parseInt(x7.value));
+                y.push(parseInt(x8.value));
+
+                const input = tf.tensor3d(y, [1,8,1]);
+                const result = model.predict(input);
+                document.getElementById('output').value=result;
+                console.log(result.value);
+	}
+        </script>
+        <style>
+            h1{
+                text-align: center;
+                font-style: italic;
+            }
+            #input{
+                height: 20px;
+                width: 50px;
+            }
+            div{
+                font-size: 20px;
+            }
+        </style>
+        <script>
+            (document).ready(function(){
+                
+            });
+        </script>
+    </head>
+    <body class='container-fluid'>
+        <h1>Prostate Cancer Detection</h1>
+        <div class="form-group" id="form1">
+            <div class="text-primary">
+                Radius - <input type="text" id="input1"><br><br>
+            </div>
+            <div class="text-primary">
+                Texture - <input type="text" id="input2"><br><br>
+            </div>
+            <div class="text-primary">
+                Perimeter - <input type="text" id="input3"><br><br>
+            </div>
+            <div class="text-primary">
+                Area - <input type="text" id="input4"><br><br>
+            </div>
+            <div class="text-primary">
+                Smoothness - <input type="text" id="input5"><br><br>
+            </div>
+            <div class="text-primary">
+                Compactness - <input type="text" id="input6"><br><br>
+            </div>
+            <div class="text-primary">
+                Symmetry - <input type="text" id="input7"><br><br>
+            </div>
+            <div class="text-primary">
+                Fractal_dimension - <input type="text" id="input8"><br><br>
+            </div>
+        </div>
+        <br>
+        <div>
+            <button class="btn btn-default btn-primary" type="submit" id="button" onclick="run()">Submit</button>
+        </div>
+        <br><br>
+        <div>
+            <h3"> <span class="text-danger"> Probability Of Cancer - </span> <input type= "text" id="output"></h3>
+        </div>
+    </body>
+</html>
+
